@@ -93,7 +93,7 @@ def typing_test_max_val(max_value):
         else:
             cnt_letters += 1
             random_letter = random.choice(string.ascii_lowercase)
-            print("Type the letter: " + random_letter)
+            print("Type the letter: " + Fore.GREEN + random_letter + Style.RESET_ALL)
             typed_letter = readchar.readkey()
             if typed_letter == random_letter:
                 interm_time = time() - interm_tot_time
@@ -109,7 +109,7 @@ def typing_test_max_val(max_value):
                 interm_tot_time = time()
                 cnt_wrong_letters += 1
                 wrong_letters.append(random_letter)
-
+            print("You typed the letter " + Fore.BLUE + typed_letter + Style.RESET_ALL)
             inputs_list.append(Input(requested=random_letter, received=typed_letter, duration=interm_time))
 
     # contabilizar tempos
@@ -142,7 +142,7 @@ def typing_test_max_time(max_value):
         else:
             cnt_time = time() - init_time
             random_letter = random.choice(string.ascii_lowercase)
-            print("Type the letter: " + random_letter)
+            print("Type the letter: " + Fore.GREEN + random_letter + Style.RESET_ALL)
             typed_letter = readchar.readkey()
             if typed_letter == random_letter:
                 interm_time = time() - interm_tot_time
@@ -158,7 +158,7 @@ def typing_test_max_time(max_value):
                 interm_tot_time = time()
                 cnt_wrong_letters += 1
                 wrong_letters.append(random_letter)
-
+            print("You typed the letter " + Fore.BLUE + typed_letter + Style.RESET_ALL)
             inputs_list.append(Input(requested=random_letter, received=typed_letter, duration=interm_time))
 
     # contabilizar tempos
@@ -178,12 +178,15 @@ def main():
                                                              "inputs for number of inputs mode.")
     args = vars(parser.parse_args())
     print(args)
+    print("PSR 2021 Typing test")
 
     if args["use_time_mode"]:
-        print("Using time mode. Test will run for " + str(args["max_value"]) + " seconds")
+        print("Test running up to " + str(args["max_value"]) + " seconds.")
+        input("Press enter to start")
         typing_test_max_time(args["max_value"])
     else:
-        print("Not using time mode. Test will ask for " + str(args["max_value"]) + " responses")
+        print("Test running up to" + str(args["max_value"]) + " inputs.")
+        input("Press enter to start")
         typing_test_max_val(args["max_value"])
 
 
