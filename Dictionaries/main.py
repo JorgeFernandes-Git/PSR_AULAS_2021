@@ -23,10 +23,17 @@ def main():
     # input tuples
     a = Input(requested="w", received="d", duration=2.3)
     b = Input(requested="r", received="f", duration=1.5)
-    c = Input(requested="i", received="y", duration=1.5)
+    c = Input(requested="i", received="y", duration=4.5)
+
+    input_list = []
+    input_list.append(a)
+    input_list.append(b)
+    input_list.append(c)
+
+    # print(input_list)
 
     my_dict["accuracy"] = 2.8
-    my_dict["inputs"] = [a, b, c]
+    my_dict["inputs"] = input_list
     my_dict["number_of_hits"] = 5
     my_dict["number_of_types"] = 8
     my_dict["test_duration"] = 5.8
