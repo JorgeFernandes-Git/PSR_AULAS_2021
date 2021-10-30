@@ -68,6 +68,7 @@ def print_my_dict():
     my_dict["type_hit_average_duration"] = avg_correct_times
     my_dict["type_miss_average_duration"] = avg_incorrect_times
 
+    print(Fore.GREEN + "Test completed. Results:" + Style.RESET_ALL)
     pp = pprint.PrettyPrinter(indent=4)
     pp.pprint(my_dict)
 
@@ -182,11 +183,13 @@ def main():
 
     if args["use_time_mode"]:
         print("Test running up to " + str(args["max_value"]) + " seconds.")
-        input("Press enter to start")
+        print("Press any key to start...")
+        pressed_continue = readchar.readkey()
         typing_test_max_time(args["max_value"])
     else:
-        print("Test running up to" + str(args["max_value"]) + " inputs.")
-        input("Press enter to start")
+        print("Test running up to " + str(args["max_value"]) + " inputs.")
+        print("Press any key to start...")
+        pressed_continue = readchar.readkey()
         typing_test_max_val(args["max_value"])
 
 
