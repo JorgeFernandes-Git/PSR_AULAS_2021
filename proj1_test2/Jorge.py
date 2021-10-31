@@ -32,7 +32,7 @@ random_letter = ""
 correct_letters = []
 wrong_letters = []
 cnt_correct_letters = 0
-cnt_wrong_letters = 0
+cnt_incorrect_letters = 0
 
 # contagem de tempo
 init_time = time()
@@ -57,10 +57,10 @@ def average(lst):
 
 
 def print_my_dict():
-    my_dict["accuracy"] = (cnt_correct_letters / (cnt_correct_letters + cnt_wrong_letters)) * 100
+    my_dict["accuracy"] = (cnt_correct_letters / (cnt_correct_letters + cnt_incorrect_letters)) * 100
     my_dict["inputs"] = inputs_list
     my_dict["number_of_hits"] = cnt_correct_letters
-    my_dict["number_of_types"] = cnt_correct_letters + cnt_wrong_letters
+    my_dict["number_of_types"] = cnt_correct_letters + cnt_incorrect_letters
     my_dict["test_duration"] = cnt_time
     my_dict["test_end"] = ctime()
     my_dict["test_start"] = ctime()
@@ -77,7 +77,7 @@ def typing_test_max_val(max_value):
     num_letters_to_type = max_value
     global cnt_letters
     global cnt_correct_letters
-    global cnt_wrong_letters
+    global cnt_incorrect_letters
     global interm_time
     global interm_tot_time
     global avg_times
@@ -126,7 +126,7 @@ def typing_test_max_time(max_value):
     max_time_to_type = max_value
     global cnt_letters
     global cnt_correct_letters
-    global cnt_wrong_letters
+    global cnt_incorrect_letters
     global interm_time
     global interm_tot_time
     global avg_times
