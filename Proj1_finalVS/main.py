@@ -159,13 +159,13 @@ def typing_test_max_time(max_time):
     interm_tot_time = init_time     # tempo intermédio total
     max_time_to_type = max_time    # tempo máximo do modo (inserido pelo utilizador)
 
-    while True:
+    while cnt_time <= max_time_to_type:
         try:
             if cnt_time >= max_time_to_type:
                 print('Current test duration ' + str(cnt_time) + ' exceeds maximum of ' + str(max_time_to_type) + " seconds.")
                 break
             else:
-                cnt_time = time() - init_time
+
                 random_letter = random.choice(string.ascii_lowercase)
                 print("Type the letter: " + Fore.GREEN + random_letter + Style.RESET_ALL)
                 typed_letter = readchar.readkey()
@@ -191,6 +191,8 @@ def typing_test_max_time(max_time):
         except:
             print("You must define a time value first! Use -h command.")
             exit()
+        cnt_time = time() - init_time
+
 
     # contabilizar tempos
     avg_times = average(read_times)
