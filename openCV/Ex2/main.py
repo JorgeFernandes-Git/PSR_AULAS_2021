@@ -19,7 +19,7 @@ def main():
     # show the images in 3 windows
     cv2.imshow("original", image1)
     cv2.imshow("gray", image_gray)
-    cv2.imshow("img_threshold", image_negative)
+    cv2.imshow("negative", image_negative)
 
     cv2.waitKey(8000)  # wait for 8 seconds
 
