@@ -6,7 +6,7 @@ import numpy as np
 
 
 def onTrackbar(threshold):
-    print(threshold)
+    print("Selected threshold " + str(threshold) + " for limit")
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     args = vars(parser.parse_args())
 
     image = cv2.imread(args['image'], cv2.IMREAD_COLOR)  # Load an image
-    image_b, image_g, image_r = cv2.split(image)  # split the image
+    # image_b, image_g, image_r = cv2.split(image)  # split the image
 
     ranges = {"b": {"min": 100, "max": 256},
               "g": {"min": 100, "max": 256},
@@ -42,17 +42,19 @@ def main():
         if k == 27:
             break
 
-        min_b = cv2.getTrackbarPos("min B", "image_negative")
-        max_b = cv2.getTrackbarPos("max B", "image_negative")
-        min_g = cv2.getTrackbarPos("min G", "image_negative")
-        max_g = cv2.getTrackbarPos("max G", "image_negative")
-        min_r = cv2.getTrackbarPos("min R", "image_negative")
-        max_r = cv2.getTrackbarPos("max R", "image_negative")
+        min_b = cv2.getTrackbarPos("min B", "image_process")
+        max_b = cv2.getTrackbarPos("max B", "image_process")
+        min_g = cv2.getTrackbarPos("min G", "image_process")
+        max_g = cv2.getTrackbarPos("max G", "image_process")
+        min_r = cv2.getTrackbarPos("min R", "image_process")
+        max_r = cv2.getTrackbarPos("max R", "image_process")
 
-        ranges = {"b": {"min": min_b, "max": max_b},
-                  "g": {"min": min_g, "max": max_g},
-                  "r": {"min": min_r, "max": max_r},
-                  }
+        ranges["b"]["min"] = min_b
+        ranges["b"]["max"] = max_b
+        ranges["g"]["min"] = min_g
+        ranges["g"]["max"] = max_g
+        ranges["r"]["min"] = min_r
+        ranges["r"]["max"] = max_r
 
         mins = np.array([ranges['b']['min'], ranges['g']['min'], ranges['r']['min']])
         maxs = np.array([ranges['b']['max'], ranges['g']['max'], ranges['r']['max']])
