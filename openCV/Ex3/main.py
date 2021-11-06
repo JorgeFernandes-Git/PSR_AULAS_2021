@@ -15,6 +15,7 @@ def onTrackbar(threshold):
     _, image_negative = cv2.threshold(image_gray, threshold, threshold, cv2.THRESH_BINARY)
     cv2.imshow("image_negative", image_negative)
 
+
 def main():
     global image_gray  # use global var
     global image
