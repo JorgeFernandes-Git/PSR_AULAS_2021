@@ -11,7 +11,7 @@ def onTrackbar(threshold):
     # Add code here to threshold image_gray and show image in window
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser()https://docs.opencv.org/3.4/Adding_Trackbars_Tutorial_Trackbar.png
     parser.add_argument('-i', '--image', type=str, required=True,help='Full path to image file.')
     args = vars(parser.parse_args())
 

@@ -24,7 +24,7 @@ def main():
     image_hsv = cv2.cvtColor(image1, cv2.COLOR_BGR2HSV)
 
     # show the images
-    cv2.namedWindow("image1", cv2.WINDOW_NORMAL)
+    cv2.namedWindow("image1", cv2.WINDOW_GUI_NORMAL)
     cv2.imshow("image1", image1)
     cv2.imshow("image_process", image_process)
     cv2.imshow("image_hsv", image_hsv)
