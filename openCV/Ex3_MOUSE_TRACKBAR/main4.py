@@ -15,6 +15,7 @@ def main():
     args = vars(parser.parse_args())
 
     image = cv2.imread(args['image'], cv2.IMREAD_COLOR)  # Load an image
+    cv2.imshow("original", image)
     # image_b, image_g, image_r = cv2.split(image)  # split the image
 
     ranges = {"b": {"min": 100, "max": 256},
@@ -26,7 +27,8 @@ def main():
     maxs = np.array([ranges['b']['max'], ranges['g']['max'], ranges['r']['max']])
     image_process = cv2.inRange(image, mins, maxs)
     cv2.imshow("image_process", image_process)
-    # image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    cv2.imshow("image_hsv", image_hsv)
 
     cv2.namedWindow('image_process')
     cv2.createTrackbar("min B", "image_process", 0, 255, onTrackbar)
