@@ -29,6 +29,8 @@ def main():
         contrast = cv2.getTrackbarPos("Contrast", "image_negative")
         brightness = cv2.getTrackbarPos("Brightness", "image_negative")
 
+        print(contrast)
+
         _, image_negative = cv2.threshold(image_gray, contrast, brightness, cv2.THRESH_BINARY)
         cv2.imshow("image_negative", image_negative)
 
