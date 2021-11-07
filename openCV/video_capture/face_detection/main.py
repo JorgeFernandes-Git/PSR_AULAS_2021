@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import cv2 as cv
+import numpy as np
 
 
 def onTrackbar(threshold):
@@ -27,11 +28,20 @@ def main():
         # Detect the faces
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)
         # Draw the rectangle around each face
-        for (x, y, w, h) in faces:
-            cv.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
-
-        # Display
-        cv.imshow(window_name, image)
+        try:
+            for (x, y, w, h) in faces:
+                cv.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                shapes = np.zeros_like(image, np.uint8)
+                cv.rectangle(shapes, (x, y), (x + w, y + h), (0, 255, 0), cv.FILLED)
+                # mask the rectangle in the image with transparency
+                final_image = image.copy()
+                alpha = 0.7
+                mask = shapes.astype(bool)
+                final_image[mask] = cv.addWeighted(image, alpha, shapes, 1 - alpha, 0)[mask]
+            # Display
+            cv.imshow(window_name, final_image)
+        except:
+            cv.imshow(window_name, image)
 
         # ESC to close
         k = cv.waitKey(30) & 0xFF
