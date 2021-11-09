@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import json
-
 import cv2
 import numpy as np
 
@@ -70,10 +69,11 @@ def main():
     file_name = 'limits.json'
     with open(file_name, 'w') as file_handle:
         print('writing dictionary d to file ' + file_name)
-        json.dump(d, file_handle)  # d is the dicionary
+        json.dump(ranges_pcss, file_handle)
 
     capture.release()  # free the webcam for other use
     cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
     main()
