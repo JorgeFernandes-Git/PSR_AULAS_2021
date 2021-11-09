@@ -37,7 +37,7 @@ def main():
 
         # read the image
         _, image = capture.read()
-
+        image = cv2.resize(image, (750, 422)) # resize the capture window
 
         # read the values on the trackbars
         min_b_pcss = cv2.getTrackbarPos("min B", window_segmented)
@@ -55,17 +55,21 @@ def main():
         ranges_pcss["r"]["min"] = min_r_pcss
         ranges_pcss["r"]["max"] = max_r_pcss
 
+        # numpy arrays
         mins_pcss = np.array([ranges_pcss['b']['min'], ranges_pcss['g']['min'], ranges_pcss['r']['min']])
         maxs_pcss = np.array([ranges_pcss['b']['max'], ranges_pcss['g']['max'], ranges_pcss['r']['max']])
 
-        # form the image and show it
-        mask = cv2.inRange(image, mins_pcss, maxs_pcss)
+        # transform the image and show it
+        mask = cv2.inRange(image, mins_pcss, maxs_pcss) # colors mask
         image_segmenter = cv2.bitwise_and(image, image, mask=mask)
 
-        # image_segmenter = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        # imshows
         cv2.imshow(window_segmented, image_segmenter)
         cv2.imshow(window_regular, image) # regular camara
 
+        """
+        interactive keys (k) -----------------------------------------
+        """
         # ESC to close
         k = cv2.waitKey(1) & 0xFF
         if k == 27:
