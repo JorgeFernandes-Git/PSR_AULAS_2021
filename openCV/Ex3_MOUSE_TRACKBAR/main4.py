@@ -47,7 +47,7 @@ def main():
     cv2.createTrackbar("min", "mask", 0, 255, onTrackbar)
     cv2.createTrackbar("max", "mask", 0, 255, onTrackbar)
 
-    # cycle for editing the image
+    # cycle for editing the images
     while True:
         # close windows on ESC
         k = cv2.waitKey(1) & 0xFF
@@ -80,8 +80,6 @@ def main():
 
         mask = cv2.inRange(image_gray, min_gray, max_gray)
         cv2.imshow("mask", mask)
-
-
 
 
 if __name__ == '__main__':

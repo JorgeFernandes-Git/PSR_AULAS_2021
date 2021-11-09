@@ -16,7 +16,7 @@ def main():
     window_name = "Color Segmenter"
     window_regular = "Video Capture"
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-    cv2.namedWindow(window_regular, cv2.WINDOW_NORMAL)
+    # cv2.namedWindow(window_regular, cv2.WINDOW_NORMAL)
 
     # create the trackbars
     cv2.createTrackbar("min B", window_name, 0, 255, onTrackbar)
@@ -37,14 +37,9 @@ def main():
 
         # read the image
         _, image = capture.read()
-        _, image_segmenter = capture.read()
-        # cv2.imshow(window_regular, image)
+        # cv2.imshow(window_regular, image) # regular camara
 
-        # ESC to close
-        k = cv2.waitKey(1) & 0xFF
-        if k == 27:
-            break
-
+        # read the values on the trackbars
         min_b_pcss = cv2.getTrackbarPos("min B", window_name)
         max_b_pcss = cv2.getTrackbarPos("max B", window_name)
         min_g_pcss = cv2.getTrackbarPos("min G", window_name)
@@ -52,6 +47,7 @@ def main():
         min_r_pcss = cv2.getTrackbarPos("min R", window_name)
         max_r_pcss = cv2.getTrackbarPos("max R", window_name)
 
+        # attribute the read values
         ranges_pcss["b"]["min"] = min_b_pcss
         ranges_pcss["b"]["max"] = max_b_pcss
         ranges_pcss["g"]["min"] = min_g_pcss
@@ -62,14 +58,27 @@ def main():
         mins_pcss = np.array([ranges_pcss['b']['min'], ranges_pcss['g']['min'], ranges_pcss['r']['min']])
         maxs_pcss = np.array([ranges_pcss['b']['max'], ranges_pcss['g']['max'], ranges_pcss['r']['max']])
 
+        # form the image and show it
         image_segmenter = cv2.inRange(image, mins_pcss, maxs_pcss)
         cv2.imshow(window_name, image_segmenter)
 
-    # save json file
-    file_name = 'limits.json'
-    with open(file_name, 'w') as file_handle:
-        print('writing dictionary d to file ' + file_name)
-        json.dump(ranges_pcss, file_handle)
+        # ESC to close
+        k = cv2.waitKey(1) & 0xFF
+        if k == 27:
+            break
+
+        # w to save the file
+        if k == ord("w"):
+            # save json file
+            file_name = 'limits.json'
+            with open(file_name, 'w') as file_handle:
+                print('Limits file saved in directory by the name ' + file_name)
+                print("Press ""q"" to quit or ""w"" to save a new file")
+                json.dump(ranges_pcss, file_handle)
+
+        # q to quit
+        if k == ord("q"):
+            break
 
     capture.release()  # free the webcam for other use
     cv2.destroyAllWindows()
