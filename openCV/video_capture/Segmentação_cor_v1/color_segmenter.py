@@ -13,18 +13,18 @@ def main():
     capture = cv2.VideoCapture(0)  # connect to webcam
 
     # create the window
-    window_name = "Color Segmenter"
+    window_segmented = "Color Segmenter"
     window_regular = "Video Capture"
-    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-    # cv2.namedWindow(window_regular, cv2.WINDOW_NORMAL)
+    cv2.namedWindow(window_segmented, cv2.WINDOW_NORMAL)
+    cv2.namedWindow(window_regular, cv2.WINDOW_NORMAL)
 
     # create the trackbars
-    cv2.createTrackbar("min B", window_name, 0, 255, onTrackbar)
-    cv2.createTrackbar("max B", window_name, 0, 255, onTrackbar)
-    cv2.createTrackbar("min G", window_name, 0, 255, onTrackbar)
-    cv2.createTrackbar("max G", window_name, 0, 255, onTrackbar)
-    cv2.createTrackbar("min R", window_name, 0, 255, onTrackbar)
-    cv2.createTrackbar("max R", window_name, 0, 255, onTrackbar)
+    cv2.createTrackbar("min B", window_segmented, 0, 255, onTrackbar)
+    cv2.createTrackbar("max B", window_segmented, 255, 255, onTrackbar)
+    cv2.createTrackbar("min G", window_segmented, 0, 255, onTrackbar)
+    cv2.createTrackbar("max G", window_segmented, 255, 255, onTrackbar)
+    cv2.createTrackbar("min R", window_segmented, 0, 255, onTrackbar)
+    cv2.createTrackbar("max R", window_segmented, 255, 255, onTrackbar)
 
     # dictionary with ranges
     ranges_pcss = {"b": {"min": 100, "max": 256},
@@ -37,15 +37,15 @@ def main():
 
         # read the image
         _, image = capture.read()
-        # cv2.imshow(window_regular, image) # regular camara
+
 
         # read the values on the trackbars
-        min_b_pcss = cv2.getTrackbarPos("min B", window_name)
-        max_b_pcss = cv2.getTrackbarPos("max B", window_name)
-        min_g_pcss = cv2.getTrackbarPos("min G", window_name)
-        max_g_pcss = cv2.getTrackbarPos("max G", window_name)
-        min_r_pcss = cv2.getTrackbarPos("min R", window_name)
-        max_r_pcss = cv2.getTrackbarPos("max R", window_name)
+        min_b_pcss = cv2.getTrackbarPos("min B", window_segmented)
+        max_b_pcss = cv2.getTrackbarPos("max B", window_segmented)
+        min_g_pcss = cv2.getTrackbarPos("min G", window_segmented)
+        max_g_pcss = cv2.getTrackbarPos("max G", window_segmented)
+        min_r_pcss = cv2.getTrackbarPos("min R", window_segmented)
+        max_r_pcss = cv2.getTrackbarPos("max R", window_segmented)
 
         # attribute the read values
         ranges_pcss["b"]["min"] = min_b_pcss
@@ -59,8 +59,12 @@ def main():
         maxs_pcss = np.array([ranges_pcss['b']['max'], ranges_pcss['g']['max'], ranges_pcss['r']['max']])
 
         # form the image and show it
-        image_segmenter = cv2.inRange(image, mins_pcss, maxs_pcss)
-        cv2.imshow(window_name, image_segmenter)
+        mask = cv2.inRange(image, mins_pcss, maxs_pcss)
+        image_segmenter = cv2.bitwise_and(image, image, mask=mask)
+
+        # image_segmenter = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        cv2.imshow(window_segmented, image_segmenter)
+        cv2.imshow(window_regular, image) # regular camara
 
         # ESC to close
         k = cv2.waitKey(1) & 0xFF
