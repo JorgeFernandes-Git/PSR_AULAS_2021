@@ -3,7 +3,6 @@
 
 import argparse
 import json
-
 import cv2
 import numpy as np
 
@@ -135,13 +134,27 @@ def main():
 
         if k == ord("T"):
             pen_thickness += 1
-            print("thickness: " + str(pen_thickness))
+            print("THICKNESS: " + str(pen_thickness))
 
         if k == ord("t"):
             pen_thickness -= 1
             if pen_thickness < 0:
                 pen_thickness = 0
             print("thickness: " + str(pen_thickness))
+
+        if k == ord("d"):
+            color_draw = (255, 255, 255)
+            print("YOU SELECT ERASER")
+
+        # past_area = cv2.contourArea(contours)
+        # if cv2.contourArea(contours) > past_area:
+        #     pen_thickness += 1
+        #     if pen_thickness > 30:
+        #         pen_thickness = 30
+        # else:
+        #     pen_thickness -= 1
+        #     if pen_thickness < 0:
+        #         pen_thickness = 0
 
     capture.release()  # free the webcam for other use
     cv2.destroyAllWindows()
