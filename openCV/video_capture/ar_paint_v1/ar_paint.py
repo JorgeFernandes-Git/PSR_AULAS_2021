@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import time
 import cv2
 import numpy as np
 
@@ -14,6 +15,13 @@ ranges_pcss = {"b": {"min": 100, "max": 256},
 
 
 def main():
+    """
+    INITIALIZE -----------------------------------------
+    """
+    # program flags
+    background_white = True  # background color
+    pointer_on = False
+
     # parse the json file with BGR limits (from color_segmenter.py)
     parser = argparse.ArgumentParser(description="Load a json file with limits")
     parser.add_argument("-j", "--json", type=str, required=True, help="Full path to json file")
@@ -48,14 +56,20 @@ def main():
     cv2.namedWindow(window_segmented, cv2.WINDOW_AUTOSIZE)
 
     # create a white image background dim 600*400
-    white_background = np.zeros((422, 750, 3), dtype="float64")
-    white_background.fill(255)
+    background = np.zeros((422, 750, 3), dtype="float64")
+    background.fill(255)
+
     # window for display white background/draw area
     draw_area = "Draw Area"
     cv2.namedWindow(draw_area)
-    color_draw = (0, 0, 0)
+
+    # pen variables
+    pen_color = (0, 0, 0)
     pen_thickness = 5
 
+    """
+    EXECUTION -----------------------------------------
+    """
     while True:
         # read the image
         _, image = capture.read()
@@ -73,7 +87,7 @@ def main():
         # cv2.drawContours(image_segmenter, contours, -1, (0, 0, 255), 3)
         # cv2.drawContours(image, contours, -1, (0, 0, 255), 3)
 
-        # create the rectangle over object
+        # create the rectangle over object and draw on the background
         for contours in contours:
             (x, y, w, h) = cv2.boundingRect(contours)
 
@@ -90,13 +104,22 @@ def main():
             b = y + h/2
             cv2.circle(image, (int(a), int(b)), 10, (0, 0, 0), cv2.FILLED)
 
-            # draw in the white background
-            cv2.circle(white_background, (int(a), int(b)), pen_thickness, color_draw, cv2.FILLED)
+            # draw in the background
+            # cur_a, cur_b = a, b
+            # cv2.line(background, (int(a), int(b)), (int(cur_a), int(cur_b)), pen_color, pen_thickness)
+            # time.sleep(0.005)
+            # a, b = cur_a, cur_b
+            if not pointer_on:
+                cv2.circle(background, (int(a), int(b)), pen_thickness, pen_color, cv2.FILLED)
+            else:
+                cv2.circle(background, (int(a), int(b)), pen_thickness, pen_color, cv2.FILLED)
+                # background.fill(255)
+
 
         # imshows
         cv2.imshow(window_segmented, image_segmenter)  # drawing object (pen)
-        cv2.imshow(draw_area, white_background)  # draw area
-        cv2.imshow("original", image)
+        cv2.imshow(draw_area, background)  # draw area
+        cv2.imshow("Original", image)
 
         """
         interactive keys (k) -----------------------------------------
@@ -108,30 +131,38 @@ def main():
 
         # clean the screen
         if k == ord("c"):
-            white_background = np.zeros((422, 750, 3), dtype="float64")
-            white_background.fill(255)
-            print("CLEAN")
+            if background_white:
+                # background = np.zeros((422, 750, 3), dtype="float64")
+                background.fill(255)
+                print("CLEAN")
+            else:
+                background.fill(0)
 
         # red color
         if k == ord("r"):
-            color_draw = (0, 0, 255)
+            pen_color = (0, 0, 255)
             print("YOU SELECT RED COLOR")
 
         # green color
         if k == ord("g"):
-            color_draw = (0, 255, 0)
+            pen_color = (0, 255, 0)
             print("YOU SELECT GREEN COLOR")
 
         # blue color
         if k == ord("b"):
-            color_draw = (255, 0, 0)
+            pen_color = (255, 0, 0)
             print("YOU SELECT BLUE COLOR")
 
         # black color
         if k == ord("B"):
-            color_draw = (0, 0, 0)
-            print("YOU SELECT BLACK COLOR")
+            if background_white:
+                pen_color = (0, 0, 0)
+                print("YOU SELECT BLACK COLOR")
+            else:
+                pen_color = (255, 255, 255)
+                print("YOU SELECT WHITE COLOR")
 
+        # thickness
         if k == ord("T"):
             pen_thickness += 1
             print("THICKNESS: " + str(pen_thickness))
@@ -140,22 +171,40 @@ def main():
             pen_thickness -= 1
             if pen_thickness < 0:
                 pen_thickness = 0
-            print("thickness: " + str(pen_thickness))
+            print("THICKNESS: " + str(pen_thickness))
 
-        if k == ord("d"):
-            color_draw = (255, 255, 255)
-            print("YOU SELECT ERASER")
+        # erase
+        if k == ord("e"):
+            if background_white:
+                pen_color = (255, 255, 255)
+                print("YOU SELECT ERASER")
+            else:
+                pen_color = (0, 0, 0)
+                print("YOU SELECT ERASER")
 
-        # past_area = cv2.contourArea(contours)
-        # if cv2.contourArea(contours) > past_area:
-        #     pen_thickness += 1
-        #     if pen_thickness > 30:
-        #         pen_thickness = 30
-        # else:
-        #     pen_thickness -= 1
-        #     if pen_thickness < 0:
-        #         pen_thickness = 0
+        # flip the background
+        if k == ord("f"):
+            if background_white:
+                # background = np.zeros((422, 750, 3), dtype="float64")
+                background.fill(0)
+                background_white = False
+                pen_color = (255, 255, 255)
+            else:
+                # background = np.zeros((422, 750, 3), dtype="float64")
+                background.fill(255)
+                background_white = True
+                pen_color = (0, 0, 0)
 
+        # pointer mode
+        if k == ord("p"):
+            if pointer_on:
+                pointer_on = False
+            else:
+                pointer_on = True
+
+    """
+    FINALIZATION -----------------------------------------
+    """
     capture.release()  # free the webcam for other use
     cv2.destroyAllWindows()
 
