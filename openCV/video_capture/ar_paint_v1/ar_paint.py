@@ -21,6 +21,12 @@ def main():
     # program flags
     background_white = True  # background color
     pointer_on = False
+    rect_drawing = False
+
+    # variables
+    dot_x, dot_y = 0, 0    # pen points
+    prev_x, prev_y = 0, 0   # point for continuous draw
+    rect_pt1_x, rect_pt1_y, rect_pt2_x, rect_pt2_y = 0, 0, 0, 0  # rectangle drawing points
 
     # parse the json file with BGR limits (from color_segmenter.py)
     parser = argparse.ArgumentParser(description="Load a json file with limits")
@@ -100,21 +106,23 @@ def main():
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
             # dot in the center of the rectangle
-            a = x + w/2
-            b = y + h/2
-            cv2.circle(image, (int(a), int(b)), 10, (0, 0, 0), cv2.FILLED)
+            dot_x = x + w / 2
+            dot_y = y + h / 2
+            cv2.circle(image, (int(dot_x), int(dot_y)), 10, (0, 0, 0), cv2.FILLED)
 
             # draw in the background
-            # cur_a, cur_b = a, b
-            # cv2.line(background, (int(a), int(b)), (int(cur_a), int(cur_b)), pen_color, pen_thickness)
-            # time.sleep(0.005)
-            # a, b = cur_a, cur_b
-            if not pointer_on:
-                cv2.circle(background, (int(a), int(b)), pen_thickness, pen_color, cv2.FILLED)
-            else:
-                cv2.circle(background, (int(a), int(b)), pen_thickness, pen_color, cv2.FILLED)
-                # background.fill(255)
+            if prev_x == 0 and prev_y == 0:   # skip first iteration
+                prev_x, prev_y = dot_x, dot_y
 
+            cv2.line(background, (int(prev_x), int(prev_y)), (int(dot_x), int(dot_y)), pen_color, pen_thickness)
+            prev_x, prev_y = dot_x, dot_y
+
+            # --------------------------------
+            # if not pointer_on:
+            #     cv2.circle(background, (int(dot_x), int(dot_y)), pen_thickness, pen_color, cv2.FILLED)
+            # else:
+            #     cv2.circle(background, (int(dot_x), int(dot_y)), pen_thickness, pen_color, cv2.FILLED)
+            #     # background.fill(255)
 
         # imshows
         cv2.imshow(window_segmented, image_segmenter)  # drawing object (pen)
@@ -132,7 +140,6 @@ def main():
         # clean the screen
         if k == ord("c"):
             if background_white:
-                # background = np.zeros((422, 750, 3), dtype="float64")
                 background.fill(255)
                 print("CLEAN")
             else:
@@ -185,12 +192,10 @@ def main():
         # flip the background
         if k == ord("f"):
             if background_white:
-                # background = np.zeros((422, 750, 3), dtype="float64")
                 background.fill(0)
                 background_white = False
                 pen_color = (255, 255, 255)
             else:
-                # background = np.zeros((422, 750, 3), dtype="float64")
                 background.fill(255)
                 background_white = True
                 pen_color = (0, 0, 0)
@@ -201,6 +206,28 @@ def main():
                 pointer_on = False
             else:
                 pointer_on = True
+
+        # draw a rectangle------------------------------------------
+        if k == ord("R"):
+            rect_drawing = True
+            rect_pt1_x = int(dot_x)
+            rect_pt1_y = int(dot_y)
+            # print(rect_cnt)
+            # print(rect_pt1_x, rect_pt1_y)
+
+        if rect_drawing:
+            rect_pt2_x = int(dot_x)
+            rect_pt2_y = int(dot_y)
+            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y), (0, 0, 0), cv2.FILLED)
+
+        if k == ord("L") and rect_drawing:
+            rect_pt2_x = int(dot_x)
+            rect_pt2_y = int(dot_y)
+            rect_drawing = False
+            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y), (0, 0, 0), cv2.FILLED)
+
+        # draw a rectangle------------------------------------------
+
 
     """
     FINALIZATION -----------------------------------------
