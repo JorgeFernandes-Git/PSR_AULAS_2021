@@ -20,13 +20,15 @@ def main():
     """
     # program flags
     background_white = True  # background color
-    pointer_on = False
-    rect_drawing = False
+    pointer_on = False  # pointer method incomplete
+    rect_drawing = False  # rectangle drawing flag
+    circle_drawing = False  # circle drawing flag
 
     # variables
-    dot_x, dot_y = 0, 0    # pen points
-    prev_x, prev_y = 0, 0   # point for continuous draw
+    dot_x, dot_y = 0, 0  # pen points
+    prev_x, prev_y = 0, 0  # point for continuous draw
     rect_pt1_x, rect_pt1_y, rect_pt2_x, rect_pt2_y = 0, 0, 0, 0  # rectangle drawing points
+    circle_pt1_x, circle_pt1_y, circle_pt2_x, circle_pt2_y = 0, 0, 0, 0  # circle drawing points
 
     # parse the json file with BGR limits (from color_segmenter.py)
     parser = argparse.ArgumentParser(description="Load a json file with limits")
@@ -111,7 +113,7 @@ def main():
             cv2.circle(image, (int(dot_x), int(dot_y)), 10, (0, 0, 0), cv2.FILLED)
 
             # draw in the background
-            if prev_x == 0 and prev_y == 0:   # skip first iteration
+            if prev_x == 0 and prev_y == 0:  # skip first iteration
                 prev_x, prev_y = dot_x, dot_y
 
             cv2.line(background, (int(prev_x), int(prev_y)), (int(dot_x), int(dot_y)), pen_color, pen_thickness)
@@ -207,7 +209,7 @@ def main():
             else:
                 pointer_on = True
 
-        # draw a rectangle------------------------------------------
+        # draw a rectangle------------------------------------------ INCOMPLETE, DRAW MULTIPLE RECTANGLES
         if k == ord("R"):
             rect_drawing = True
             rect_pt1_x = int(dot_x)
@@ -218,16 +220,33 @@ def main():
         if rect_drawing:
             rect_pt2_x = int(dot_x)
             rect_pt2_y = int(dot_y)
-            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y), (0, 0, 0), cv2.FILLED)
+            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y),pen_color, cv2.FILLED)
 
         if k == ord("L") and rect_drawing:
             rect_pt2_x = int(dot_x)
             rect_pt2_y = int(dot_y)
             rect_drawing = False
-            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y), (0, 0, 0), cv2.FILLED)
+            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y), pen_color, cv2.FILLED)
 
-        # draw a rectangle------------------------------------------
+        # draw a circle------------------------------------------ INCOMPLETE, DOESN'T WORK PROPERLY
+        if k == ord("C"):
+            circle_drawing = True
+            circle_pt1_x = int(dot_x)
+            circle_pt1_y = int(dot_y)
 
+        if circle_drawing:
+            circle_pt2_x = int(dot_x)
+            circle_pt2_y = int(dot_y)
+            # cv2.circle(image, center_coordinates, radius, color, thickness)
+            cv2.ellipse(background, (circle_pt1_x, circle_pt1_y),
+                        (circle_pt2_x, circle_pt2_y), 45, 45, 360, pen_color, cv2.FILLED)
+
+        if k == ord("L") and circle_drawing:
+            circle_pt2_x = int(dot_x)
+            circle_pt2_y = int(dot_y)
+            circle_drawing = False
+            cv2.ellipse(background, (circle_pt1_x, circle_pt1_y),
+                        (circle_pt2_x, circle_pt2_y), 0, 0, 360, pen_color, cv2.FILLED)
 
     """
     FINALIZATION -----------------------------------------
