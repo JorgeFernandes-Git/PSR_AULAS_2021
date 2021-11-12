@@ -64,12 +64,17 @@ def main():
     cv2.namedWindow(window_segmented, cv2.WINDOW_AUTOSIZE)
 
     # create a white image background dim 600*400
-    background = np.zeros((422, 750, 3), dtype="float64")
+    background = np.zeros((422, 750, 3), np.uint8)
     background.fill(255)
 
-    # window for display white background/draw area
+    # window for display background/draw area
     draw_area = "Draw Area"
     cv2.namedWindow(draw_area)
+
+    # merged camera and drawing
+    merged_area = "Interactive Drawing"
+    cv2.namedWindow(merged_area)
+    image_canvas = np.zeros((422, 750, 3), np.uint8)
 
     # pen variables
     pen_color = (0, 0, 0)
@@ -116,8 +121,13 @@ def main():
             if prev_x == 0 and prev_y == 0:  # skip first iteration
                 prev_x, prev_y = dot_x, dot_y
 
-            cv2.line(background, (int(prev_x), int(prev_y)), (int(dot_x), int(dot_y)), pen_color, pen_thickness)
-            prev_x, prev_y = dot_x, dot_y
+            if abs(prev_x - dot_x) < 40:   # mitigate appears and disappears of the pen
+                cv2.line(background, (int(prev_x), int(prev_y)), (int(dot_x), int(dot_y)), pen_color, pen_thickness)
+                cv2.line(image_canvas, (int(prev_x), int(prev_y)), (int(dot_x), int(dot_y)), pen_color, pen_thickness)
+                prev_x, prev_y = dot_x, dot_y
+            else:
+                prev_x = 0
+                prev_y = 0
 
             # --------------------------------
             # if not pointer_on:
@@ -126,10 +136,23 @@ def main():
             #     cv2.circle(background, (int(dot_x), int(dot_y)), pen_thickness, pen_color, cv2.FILLED)
             #     # background.fill(255)
 
+
         # imshows
         cv2.imshow(window_segmented, image_segmenter)  # drawing object (pen)
         cv2.imshow(draw_area, background)  # draw area
         cv2.imshow("Original", image)
+
+        # merge the video and the drawing
+        # image_merged = cv2.addWeighted(image, 0.5, background, 0.5, 0) # merged the images to draw on the video
+        # cv2.imshow(merged_area, image_merged)
+        image_gray = cv2.cvtColor(image_canvas, cv2.COLOR_BGR2GRAY)
+        _, image_inverse = cv2.threshold(image_gray, 50, 255, cv2.THRESH_BINARY_INV)
+        image_inverse = cv2.cvtColor(image_inverse, cv2.COLOR_GRAY2BGR)
+        image = cv2.bitwise_and(image, image_inverse)
+        image = cv2.bitwise_or(image, image_canvas)
+        cv2.imshow(merged_area, image)
+
+
 
         """
         interactive keys (k) -----------------------------------------
@@ -143,6 +166,7 @@ def main():
         if k == ord("c"):
             if background_white:
                 background.fill(255)
+                image_canvas.fill(0)
                 print("CLEAN")
             else:
                 background.fill(0)
@@ -202,7 +226,7 @@ def main():
                 background_white = True
                 pen_color = (0, 0, 0)
 
-        # pointer mode
+        # pointer mode ---- not working
         if k == ord("p"):
             if pointer_on:
                 pointer_on = False
@@ -220,7 +244,7 @@ def main():
         if rect_drawing:
             rect_pt2_x = int(dot_x)
             rect_pt2_y = int(dot_y)
-            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y),pen_color, cv2.FILLED)
+            cv2.rectangle(background, (rect_pt1_x, rect_pt1_y), (rect_pt2_x, rect_pt2_y), pen_color, cv2.FILLED)
 
         if k == ord("L") and rect_drawing:
             rect_pt2_x = int(dot_x)
