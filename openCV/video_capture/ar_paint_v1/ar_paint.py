@@ -121,13 +121,12 @@ def main():
             if prev_x == 0 and prev_y == 0:  # skip first iteration
                 prev_x, prev_y = dot_x, dot_y
 
-            if abs(prev_x - dot_x) < 40:   # mitigate appears and disappears of the pen
+            if abs(prev_x - dot_x) < 50 and abs(prev_y - dot_y) < 50:   # mitigate appears and disappears of the pen
                 cv2.line(background, (int(prev_x), int(prev_y)), (int(dot_x), int(dot_y)), pen_color, pen_thickness)
                 cv2.line(image_canvas, (int(prev_x), int(prev_y)), (int(dot_x), int(dot_y)), pen_color, pen_thickness)
                 prev_x, prev_y = dot_x, dot_y
             else:
-                prev_x = 0
-                prev_y = 0
+                prev_x, prev_y = 0, 0
 
             # --------------------------------
             # if not pointer_on:
@@ -142,7 +141,7 @@ def main():
         cv2.imshow(draw_area, background)  # draw area
         cv2.imshow("Original", image)
 
-        # merge the video and the drawing
+        # merge the video and the drawing ----------------------------INCOMPLETE DOESN'T DRAW THE BLACK COLOR
         # image_merged = cv2.addWeighted(image, 0.5, background, 0.5, 0) # merged the images to draw on the video
         # cv2.imshow(merged_area, image_merged)
         image_gray = cv2.cvtColor(image_canvas, cv2.COLOR_BGR2GRAY)
@@ -151,8 +150,6 @@ def main():
         image = cv2.bitwise_and(image, image_inverse)
         image = cv2.bitwise_or(image, image_canvas)
         cv2.imshow(merged_area, image)
-
-
 
         """
         interactive keys (k) -----------------------------------------

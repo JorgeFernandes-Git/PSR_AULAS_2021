@@ -1,7 +1,12 @@
 #!/usr/bin/python3
+
 import json
 import cv2
 import numpy as np
+
+"""
+Script to segment the colors on a video from the pc webcam
+"""
 
 
 def onTrackbar(threshold):
@@ -15,8 +20,8 @@ def main():
     # create the window
     window_segmented = "Color Segmenter"
     window_regular = "Video Capture"
-    cv2.namedWindow(window_segmented, cv2.WINDOW_NORMAL)
-    cv2.namedWindow(window_regular, cv2.WINDOW_NORMAL)
+    cv2.namedWindow(window_segmented, cv2.WINDOW_AUTOSIZE)
+    cv2.namedWindow(window_regular, cv2.WINDOW_AUTOSIZE)
 
     # create the trackbars
     cv2.createTrackbar("min B", window_segmented, 0, 255, onTrackbar)
@@ -37,7 +42,7 @@ def main():
 
         # read the image
         _, image = capture.read()
-        image = cv2.resize(image, (750, 422)) # resize the capture window
+        image = cv2.resize(image, (750, 422))  # resize the capture window
 
         # read the values on the trackbars
         min_b_pcss = cv2.getTrackbarPos("min B", window_segmented)
@@ -47,7 +52,7 @@ def main():
         min_r_pcss = cv2.getTrackbarPos("min R", window_segmented)
         max_r_pcss = cv2.getTrackbarPos("max R", window_segmented)
 
-        # attribute the read values
+        # attribute the read values to the ranges dictionary
         ranges_pcss["b"]["min"] = min_b_pcss
         ranges_pcss["b"]["max"] = max_b_pcss
         ranges_pcss["g"]["min"] = min_g_pcss
@@ -60,12 +65,13 @@ def main():
         maxs_pcss = np.array([ranges_pcss['b']['max'], ranges_pcss['g']['max'], ranges_pcss['r']['max']])
 
         # transform the image and show it
-        mask = cv2.inRange(image, mins_pcss, maxs_pcss) # colors mask
+        mask = cv2.inRange(image, mins_pcss, maxs_pcss)  # colors mask
         image_segmenter = cv2.bitwise_and(image, image, mask=mask)
+
 
         # imshows
         cv2.imshow(window_segmented, image_segmenter)
-        cv2.imshow(window_regular, image) # regular camara
+        cv2.imshow(window_regular, image)  # regular camara
 
         """
         interactive keys (k) -----------------------------------------
@@ -75,13 +81,13 @@ def main():
         if k == 27:
             break
 
-        # w to save the file
+        # w to save the json file
         if k == ord("w"):
             # save json file
             file_name = 'limits.json'
             with open(file_name, 'w') as file_handle:
                 print('Limits file saved in directory by the name ' + file_name)
-                print("Press ""q"" to quit or ""w"" to save a new file")
+                print("Press q to quit or w to save a new file")
                 json.dump(ranges_pcss, file_handle)
 
         # q to quit
