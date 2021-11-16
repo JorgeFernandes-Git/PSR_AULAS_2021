@@ -10,23 +10,26 @@ color_draw = (0, 0, 0)  # pen color
 
 
 def mouse_draw(event, x, y, flags, param):
-    global image
+    global image, pt1_y, pt1_x
     global moving_mouse
     global color_draw
 
     # detect if left button is pressed
     if event == cv.EVENT_LBUTTONDOWN:
         moving_mouse = True
-        cv.circle(image, (x, y), 2, color_draw, 2)
+        pt1_x, pt1_y = x, y
 
     # disable the flag to stop drawing
     if event == cv.EVENT_LBUTTONUP:
         moving_mouse = False
+        cv.line(image, (pt1_x, pt1_y), (x, y), color_draw, 2)
+
 
     # draw while mouse is moving
     if event == cv.EVENT_MOUSEMOVE:
         if moving_mouse:
-            cv.circle(image, (x, y), 2, color_draw, 2)
+            cv.line(image, (pt1_x, pt1_y), (x, y), color_draw, 2)
+            pt1_x, pt1_y = x, y
 
 
 def main():
