@@ -7,7 +7,7 @@ import face_recognition
 
 def main():
     # load image
-    img_original = face_recognition.load_image_file("ElonMusk1.jpeg")
+    img_original = face_recognition.load_image_file("elon_musk1.jpeg")
     img_original = cv2.cvtColor(img_original, cv2.COLOR_BGR2RGB)
 
     # image to test landmarks
