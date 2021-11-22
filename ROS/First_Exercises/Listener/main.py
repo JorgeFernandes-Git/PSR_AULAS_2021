@@ -1,10 +1,11 @@
 #!/usr/bin/python3
+import argparse
 import rospy
 from std_msgs.msg import String
 
 
 def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + " Look another car at " + str(data.data))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(data.data))
 
 
 def main():
@@ -14,9 +15,13 @@ def main():
     # name for our 'listener' node so that multiple listeners can
     # run simultaneously.
 
-    rospy.init_node('Porto', anonymous=True)
+    parser = argparse.ArgumentParser(description='Select the node and the topic to subscribe')
+    parser.add_argument('-nd', '--node', type=str, default="Lost", help='Name a node to subscribe')
+    parser.add_argument('-tp', '--topic', type=str, default="Anywhere", help='Name a topic')
+    args = vars(parser.parse_args())
 
-    rospy.Subscriber("A1", String, callback)
+    rospy.init_node(args["node"], anonymous=True)
+    rospy.Subscriber(args["topic"], String, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
