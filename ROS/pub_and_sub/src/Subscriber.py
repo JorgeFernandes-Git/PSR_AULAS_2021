@@ -17,11 +17,15 @@ def main():
 
     parser = argparse.ArgumentParser(description='Select the node and the topic to subscribe')
     parser.add_argument('-nd', '--node', type=str, default="Lost", help='Name a node to subscribe')
-    parser.add_argument('-tp', '--topic', type=str, default="Anywhere", help='Name a topic')
+    parser.add_argument('-tp1', '--topic1', type=str, default="Anywhere", help='Name a topic1')
+    parser.add_argument('-tp2', '--topic2', type=str, help='Name a topic2')
     args = vars(parser.parse_args())
 
     rospy.init_node(args["node"], anonymous=True)
-    rospy.Subscriber(args["topic"], String, callback)
+    rospy.Subscriber(args["topic1"], String, callback)
+
+    if not args["topic2"] is None:
+        rospy.Subscriber(args["topic2"], String, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
