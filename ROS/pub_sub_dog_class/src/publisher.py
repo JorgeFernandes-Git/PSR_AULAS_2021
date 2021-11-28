@@ -22,7 +22,9 @@ def main():
         dog.name = "bobby"
         dog.age = 77
         dog.color = "brown"
-        dog.brothers.append("rosita")
+        dog.brothers.append("Rex")
+        dog.brothers.append("Max")
+        dog.brothers.append("Snoopy")
 
         # message_to_send = args["message"]
         rospy.loginfo("Sending a dog ...")

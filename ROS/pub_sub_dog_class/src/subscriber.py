@@ -2,11 +2,15 @@
 import argparse
 import rospy
 from std_msgs.msg import String
+# from pub_sub_dog_class.msg import Dog
 from pub_sub_dog_class.msg import Dog
 
 
-def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(data.name))
+def callback(msg):
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.name))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.age))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.color))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.brothers))
 
 
 def main():
@@ -18,7 +22,7 @@ def main():
 
     parser = argparse.ArgumentParser(description='Select the node and the topic to subscribe')
     parser.add_argument('-nd', '--node', type=str, default="Lost", help='Name a node to subscribe')
-    parser.add_argument('-tp1', '--topic1', type=str, default="Anywhere", help='Name a topic1')
+    parser.add_argument('-tp1', '--topic1', type=str, help='Name a topic1')
     parser.add_argument('-tp2', '--topic2', type=str, help='Name a topic2')
     args = vars(parser.parse_args())
 
