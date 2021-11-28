@@ -8,7 +8,7 @@ from pub_sub_dog_class.msg import Dog
 def main():
     parser = argparse.ArgumentParser(description='Select the message to send, the topic and the rate')
     parser.add_argument("-nd", "--node", type=str, default="Anywhere", help="Name the node to publish")
-    parser.add_argument('-msg', '--message', type=str, default="No message to send", help='Message to send')
+    parser.add_argument('-msg', '--message', type=str, help='Message to send')
     parser.add_argument('-tp', '--topic', type=str, default="Anywhere", help='Topic to send message')
     parser.add_argument('-rt', '--rate', type=float, default=0.5, help='Message rate')
     args = vars(parser.parse_args())
