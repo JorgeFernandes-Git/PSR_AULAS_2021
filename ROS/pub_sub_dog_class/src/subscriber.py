@@ -26,7 +26,7 @@ def main():
     rospy.Subscriber(args["topic1"], Dog, callback)
 
     if not args["topic2"] is None:
-        rospy.Subscriber(args["topic2"], String, callback)
+        rospy.Subscriber(args["topic2"], Dog, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
