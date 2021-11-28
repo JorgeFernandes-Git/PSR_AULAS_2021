@@ -2,10 +2,11 @@
 import argparse
 import rospy
 from std_msgs.msg import String
+from pub_sub_class.msg import Dog
 
 
 def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(data.data))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(data.name))
 
 
 def main():
@@ -22,7 +23,7 @@ def main():
     args = vars(parser.parse_args())
 
     rospy.init_node(args["node"], anonymous=True)
-    rospy.Subscriber(args["topic1"], String, callback)
+    rospy.Subscriber(args["topic1"], Dog, callback)
 
     if not args["topic2"] is None:
         rospy.Subscriber(args["topic2"], String, callback)

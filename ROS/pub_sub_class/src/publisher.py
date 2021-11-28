@@ -2,7 +2,7 @@
 import argparse
 import rospy
 from std_msgs.msg import String
-from pub_
+from pub_sub_class.msg import Dog
 
 
 def main():
@@ -14,13 +14,19 @@ def main():
     args = vars(parser.parse_args())
 
     rospy.init_node(args["node"], anonymous=True)
-    pub = rospy.Publisher(args["topic"], String, queue_size=10)
+    pub = rospy.Publisher(args["topic"], Dog, queue_size=10)
     rate = rospy.Rate(args["rate"])  # 10hz
 
     while not rospy.is_shutdown():
-        message_to_send = args["message"]
-        rospy.loginfo(message_to_send)
-        pub.publish(message_to_send)
+        dog = Dog()
+        dog.name = "bobby"
+        dog.age = 77
+        dog.color = "brown"
+        dog.brothers.append("rosita")
+
+        # message_to_send = args["message"]
+        rospy.loginfo("Sending a dog ...")
+        pub.publish(dog)
         rate.sleep()
 
 
