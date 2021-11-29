@@ -2,17 +2,14 @@
 import argparse
 import rospy
 from std_msgs.msg import String
-# from pub_sub_dog_class.msg import Dog
 from pub_sub_dog_class.msg import Dog
-from pub_sub_dog_class.srv import SetDogName, SetDogNameResponse
 
 
 def callback(msg):
-    # rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.name))
-    # rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.age))
-    # rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.color))
-    # rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.brothers))
-    return SetDogNameResponse()
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.name))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.age))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.color))
+    rospy.loginfo(rospy.get_caller_id() + " Message Received: " + str(msg.brothers))
 
 def main():
     # In ROS, nodes are uniquely named. If two nodes with the same
@@ -28,8 +25,7 @@ def main():
     args = vars(parser.parse_args())
 
     rospy.init_node(args["node"], anonymous=True)
-    s = rospy.Service('SetDogName', SetDogName, callback)
-    # rospy.Subscriber(args["topic1"], Dog, callback)
+    rospy.Subscriber(args["topic1"], Dog, callback)
 
     if not args["topic2"] is None:
         rospy.Subscriber(args["topic2"], Dog, callback)
