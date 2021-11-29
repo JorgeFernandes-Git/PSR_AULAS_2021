@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import sys
 import rospy
 from pub_sub_dog_class.srv import *
 
@@ -14,5 +15,13 @@ def main(new_name):
         print("Service call failed: %s" % e)
 
 
+def usage():
+    return "%s [x y]" % sys.argv[0]
+
+
 if __name__ == '__main__':
-    main()
+    if len(sys.argv) == 3:
+        new_name = str(sys.argv[1])
+    else:
+        print(usage())
+        sys.exit(1)
