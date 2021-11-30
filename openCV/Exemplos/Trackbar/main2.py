@@ -18,7 +18,7 @@ def main():
     cv.createTrackbar(switch, 'image', 0, 1, nothing)
 
     while True:
-        img = cv.imread("/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images/atlas2000_e_atlasmv.png")
+        img = cv.imread("/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images_recog/atlas2000_e_atlasmv.png")
         pos = cv.getTrackbarPos('CP', 'image')
         font = cv.FONT_HERSHEY_SIMPLEX
         cv.putText(img, str(pos), (50, 150), font, 3, (255, 255, 255), 10)

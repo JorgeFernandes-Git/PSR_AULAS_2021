@@ -4,7 +4,7 @@ import cv2 as cv
 
 
 def main():
-    image = cv.imread("/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images/atlascar.png")
+    image = cv.imread("/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images_recog/atlascar.png")
 
     # positions are in (x, y) format
 

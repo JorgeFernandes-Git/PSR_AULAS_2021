@@ -7,11 +7,11 @@ import face_recognition
 
 def main():
     # load image
-    img_original = face_recognition.load_image_file("bill_gates.jpg")
+    img_original = face_recognition.load_image_file("images_recog/bill_gates.jpg")
     img_original = cv2.cvtColor(img_original, cv2.COLOR_BGR2RGB)
 
     # image to test landmarks
-    img_test = face_recognition.load_image_file("bill_gates2.jpg")
+    img_test = face_recognition.load_image_file("images_for_test/bill_gates2.jpg")
     img_test = cv2.cvtColor(img_test, cv2.COLOR_BGR2RGB)
 
     # detect the face
@@ -34,7 +34,7 @@ def main():
     cv2.putText(img_test, f'{results} {round(face_dist[0], 2)}',
                 (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)  # display the results o the test image
 
-    # show the images
+    # show the images_recog
     cv2.imshow("Original", img_original)
     cv2.imshow("Test", img_test)
     cv2.waitKey(0)

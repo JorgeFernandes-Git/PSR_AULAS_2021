@@ -43,7 +43,7 @@ def main():
     global color_draw, pen_thickness
 
     # create a white image background dim 600*400
-    image = cv2.imread("/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte07/images/pinguim.png")
+    image = cv2.imread("/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte07/images_recog/pinguim.png")
     # image = np.zeros((600, 400, 3), dtype="float64") # white background
     # image.fill(255)
 

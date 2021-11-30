@@ -47,7 +47,7 @@ def main():
     cv2.createTrackbar("min", "mask", 0, 255, onTrackbar)
     cv2.createTrackbar("max", "mask", 0, 255, onTrackbar)
 
-    # cycle for editing the images
+    # cycle for editing the images_recog
     while True:
         # close windows on ESC
         k = cv2.waitKey(1) & 0xFF

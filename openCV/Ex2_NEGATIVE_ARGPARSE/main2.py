@@ -9,7 +9,7 @@ import readchar
 
 def main():
     # path to image
-    image_1 = "/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images/atlas2000_e_atlasmv.png"
+    image_1 = "/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images_recog/atlas2000_e_atlasmv.png"
     image1 = cv2.imread(image_1, cv2.IMREAD_COLOR)  # Load an image
     image_b, image_g, image_r = cv2.split(image1)  # split the image
 
@@ -23,7 +23,7 @@ def main():
     image_process = cv2.inRange(image1, mins, maxs)
     image_hsv = cv2.cvtColor(image1, cv2.COLOR_BGR2HSV)
 
-    # show the images
+    # show the images_recog
     cv2.namedWindow("image1", cv2.WINDOW_GUI_NORMAL)
     cv2.imshow("image1", image1)
     cv2.imshow("image_process", image_process)

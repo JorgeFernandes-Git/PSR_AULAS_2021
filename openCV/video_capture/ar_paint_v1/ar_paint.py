@@ -142,7 +142,7 @@ def main():
         cv2.imshow("Original", image)
 
         # merge the video and the drawing ----------------------------INCOMPLETE DOESN'T DRAW THE BLACK COLOR
-        # image_merged = cv2.addWeighted(image, 0.5, background, 0.5, 0) # merged the images to draw on the video
+        # image_merged = cv2.addWeighted(image, 0.5, background, 0.5, 0) # merged the images_recog to draw on the video
         # cv2.imshow(merged_area, image_merged)
         image_gray = cv2.cvtColor(image_canvas, cv2.COLOR_BGR2GRAY)
         _, image_inverse = cv2.threshold(image_gray, 50, 255, cv2.THRESH_BINARY_INV)

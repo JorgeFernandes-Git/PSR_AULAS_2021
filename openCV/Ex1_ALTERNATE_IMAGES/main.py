@@ -12,8 +12,8 @@ def main():
     # args = vars(parser.parse_args())
     # print(args)
 
-    image_1 = "/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images/atlascar.png"
-    image_2 = "/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images/atlascar2.png"
+    image_1 = "/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images_recog/atlascar.png"
+    image_2 = "/home/jorge/Desktop/UA/PSR/Pycharm_EX/psr_21-22/Parte05/images_recog/atlascar2.png"
     image1 = cv2.imread(image_1, cv2.IMREAD_COLOR)  # Load an image
     image2 = cv2.imread(image_2, cv2.IMREAD_COLOR)
 
