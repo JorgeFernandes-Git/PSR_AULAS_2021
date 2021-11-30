@@ -55,6 +55,7 @@ def main():
     # load camera
     while True:
         success, img = cap.read()
+        img = cv2.flip(img, 1)  # flip video capture
         img_s = cv2.resize(img, (0, 0), None, 0.25, 0.25)
         img_s = cv2.cvtColor(img_s, cv2.COLOR_BGR2RGB)
 
