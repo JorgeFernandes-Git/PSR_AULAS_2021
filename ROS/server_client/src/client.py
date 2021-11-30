@@ -16,11 +16,11 @@ def main(new_name):
 
 
 def usage():
-    return "%s [x y]" % sys.argv[0]
+    return "%s Dog name" % sys.argv[0]
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 3:
+    if len(sys.argv) == 2:
         new_name = str(sys.argv[1])
     else:
         print(usage())
