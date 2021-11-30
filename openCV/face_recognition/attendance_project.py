@@ -32,6 +32,9 @@ def mark_attendance(name):
 
 
 def main():
+    """
+    initialization
+    """
     # variables for read images_recog from folder
     path = "images_recog"
     images = []
@@ -52,6 +55,9 @@ def main():
     # read from camera
     cap = cv2.VideoCapture(0)
 
+    """
+    running
+    """
     # load camera
     while True:
         success, img = cap.read()
@@ -87,6 +93,9 @@ def main():
         if k == 27:
             break
 
+    """
+    finalization
+    """
     cap.release()  # free the webcam for other uses if needed
     cv2.destroyAllWindows()
 
