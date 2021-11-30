@@ -77,7 +77,7 @@ def main():
                 cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
                 # attendance function, using csv file (comma separated values - this file can be open in EXCEL)
-                # mark_attendance(name)
+                mark_attendance(name)
 
         cv2.imshow("webcam", img)
 
