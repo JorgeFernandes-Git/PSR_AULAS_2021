@@ -18,7 +18,7 @@ def find_encodings(images):
 
 
 def mark_attendance(name):
-    with open("attendance.csv","r+") as f:
+    with open("attendance.csv", "r+") as f:
         my_data_list = f.readline()
         name_list = []
         # print(my_data_list)
@@ -56,7 +56,7 @@ def main():
     while True:
         success, img = cap.read()
         img_s = cv2.resize(img, (0, 0), None, 0.25, 0.25)
-        img_s = cv2.cvtColor((img_s, cv2.COLOR_BGR2RGB))
+        img_s = cv2.cvtColor(img_s, cv2.COLOR_BGR2RGB)
 
         faces_cur_frame = face_recognition.face_locations(img_s)
         encode_cur_frame = face_recognition.face_encodings(img_s, faces_cur_frame)
@@ -71,16 +71,23 @@ def main():
                 name = class_names[match_index].upper()
                 # print(name)
                 y1, x2, y2, x1 = face_loc
-                y1, x2, y2, x1 = y1*4, x2*4, y2*4, x1*4
+                y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
                 cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
                 cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
                 # attendance function, using csv file (comma separated values - this file can be open in EXCEL)
-                mark_attendance(name)
+                # mark_attendance(name)
 
         cv2.imshow("webcam", img)
-        cv2.waitKey(1)
+
+        # ESC to close
+        k = cv2.waitKey(1) & 0xFF
+        if k == 27:
+            break
+
+    cap.release()  # free the webcam for other uses if needed
+    cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
