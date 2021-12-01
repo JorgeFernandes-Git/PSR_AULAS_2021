@@ -76,7 +76,7 @@ def main():
         prev_time = cur_time
 
         # put text on frame
-        cv2.putText(img, str(int(fps)), (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 3, (0, 0, 0), 3)
+        cv2.putText(img, str(int(fps)), (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1)
 
         cv2.imshow("Image", img)
 
