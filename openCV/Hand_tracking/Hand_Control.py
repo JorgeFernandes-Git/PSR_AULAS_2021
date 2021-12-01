@@ -26,17 +26,20 @@ def main():
         lm_list = detector.find_position(img, draw=False)
 
         if not len(lm_list) == 0:
-
             # find thumb and index fingertips (see hand_landmarks.png)
             print(lm_list[4], lm_list[8])
 
             # find center of the fingers by landmarks
             x1, y1 = lm_list[4][1], lm_list[4][2]
             x2, y2 = lm_list[8][1], lm_list[8][2]
+            cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
 
             # draw a circle in the center
-            cv2.circle(img, (x1, y1), 15, (255, 0, 255), cv2.FILLED)
-            cv2.circle(img, (x2, y2), 15, (255, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x1, y1), 10, (255, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 10, (255, 0, 255), cv2.FILLED)
+            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
+            cv2.circle(img, (cx, cy), 5, (255, 255, 255), cv2.FILLED)
+
 
         # number of frames
         cur_time = time.time()
