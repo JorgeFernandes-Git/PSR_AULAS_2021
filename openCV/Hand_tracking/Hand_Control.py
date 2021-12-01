@@ -16,6 +16,9 @@ def main():
     # measure fps
     prev_time = 0
 
+    # initial bar value
+    bar_length = 400
+
     # hand object
     detector = htm.HandDetector()
 
@@ -23,7 +26,7 @@ def main():
         success, img = cap.read()
 
         # detect hands and put dots and lines
-        img = detector.find_hands(img)
+        img = detector.find_hands(img, draw=False)
         lm_list = detector.find_position(img, draw=False)
 
         if not len(lm_list) == 0:
@@ -36,24 +39,30 @@ def main():
             cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
 
             # draw a circle in the center
-            cv2.circle(img, (x1, y1), 10, (255, 0, 255), cv2.FILLED)  # thumb circle
-            cv2.circle(img, (x2, y2), 10, (255, 0, 255), cv2.FILLED)  # index circle
-            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), 3)  # line between circles
-            cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)  # circle in center of line
+            # cv2.circle(img, (x1, y1), 10, (255, 0, 255), cv2.FILLED)  # thumb circle
+            # cv2.circle(img, (x2, y2), 10, (255, 0, 255), cv2.FILLED)  # index circle
+            # cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), 3)  # line between circles
+            # cv2.circle(img, (cx, cy), 5, (255, 0, 255), cv2.FILLED)  # circle in center of line
 
             # length of the line
             length = math.hypot(x2 - x1, y2 - y1)
             print(length)
 
-            # hand range 50 to 300
-            # volume range -65 to 0
-            vol = np.interp(length, [50, 300][min_vol, max_vol])
-            print(int(length), vol)
-
+            # hand range 25 to 200
+            bar_length = np.interp(length, [25, 200], [50, 590])
+            print(int(length), bar_length)
 
             # circle line color
-            if length < 50:
-                cv2.circle(img, (cx, cy), 10, (0, 255, 0), cv2.FILLED)  # circle in center of line
+            if length < 25:
+                pass
+                # cv2.circle(img, (cx, cy), 10, (0, 255, 0), cv2.FILLED)  # circle in center of line
+
+            # draw bar
+            cv2.rectangle(img, (50, 420), (int(bar_length), 450), (255, 0, 0), cv2.FILLED)
+            # cv2.rectangle(img, (50, 150), (85, 400), (0, 255, 0), 3)
+
+        else:
+            cv2.putText(img, f'No hand detected', (50, 450), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
         # number of frames
         cur_time = time.time()
@@ -61,7 +70,7 @@ def main():
         prev_time = cur_time
 
         # put text on frame (frame/seconds)
-        cv2.putText(img, f'FPS: {str(int(fps))}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1)
+        cv2.putText(img, f'FPS: {str(int(fps))}', (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 2)
 
         # show the image
         cv2.imshow("Image", img)
