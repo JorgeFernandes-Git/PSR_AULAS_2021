@@ -17,6 +17,7 @@ def main():
 
     while True:
         success, img = cap.read()
+        img = cv2.flip(img, 1)  # flip video capture
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = hands.process(img_rgb)
         # print(results)
@@ -29,6 +30,8 @@ def main():
                     cx, cy = int(lm.x * w), int(lm.y * h)
                     # print(id, cx, cy)
                     if id == 4:  # id of the landmark (21 in total)
+                        cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
+                    if id == 8:  # id of the landmark (21 in total)
                         cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
                 mp_draw.draw_landmarks(img, hand_lms,
                                        mp_hands.HAND_CONNECTIONS)  # hand_lms is single hand

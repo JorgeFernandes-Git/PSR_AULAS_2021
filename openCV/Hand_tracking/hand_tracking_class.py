@@ -5,9 +5,17 @@ import mediapipe as mp
 import time
 
 
+# def __init__(self,
+#              static_image_mode=False,
+#              max_num_hands=2,
+#              model_complexity=1,
+#              min_detection_confidence=0.5,
+#              min_tracking_confidence=0.5):
+
 class HandDetector():
 
-    def __init__(self, mode=False, max_hands=2, detection_confidant=0.5, track_confidant=0.5):
+    def __init__(self, mode=False, max_hands=2, detection_confidant=0, track_confidant=0.5):
+        # self.results = None
         self.mode = mode
         self.max_hands = max_hands
         self.detection_confidant = detection_confidant
@@ -28,7 +36,6 @@ class HandDetector():
                 if draw:
                     self.mp_draw.draw_landmarks(img, hand_lms,
                                                 self.mp_hands.HAND_CONNECTIONS)  # hand_lms is single hand
-
         return img
 
     def find_position(self, img, hand_num=0, draw=True):
@@ -43,8 +50,8 @@ class HandDetector():
                 # print(id, cx, cy)
                 lm_list.append([id, cx, cy])
                 # if id == 0:  # id of the landmark (21 in total)
-                if draw:
-                    cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
+                # if draw:
+                #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
         return lm_list
 
 
