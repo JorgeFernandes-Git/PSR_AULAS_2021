@@ -28,7 +28,7 @@ def main():
                     h, w, c = img.shape
                     cx, cy = int(lm.x * w), int(lm.y * h)
                     # print(id, cx, cy)
-                    if id == 0:  # id of the landmark (21 in total)
+                    if id == 4:  # id of the landmark (21 in total)
                         cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
                 mp_draw.draw_landmarks(img, hand_lms,
                                        mp_hands.HAND_CONNECTIONS)  # hand_lms is single hand
