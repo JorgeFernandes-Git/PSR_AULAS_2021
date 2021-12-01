@@ -5,13 +5,6 @@ import mediapipe as mp
 import time
 
 
-# def __init__(self,
-#              static_image_mode=False,
-#              max_num_hands=2,
-#              model_complexity=1,
-#              min_detection_confidence=0.5,
-#              min_tracking_confidence=0.5):
-
 class HandDetector():
 
     def __init__(self, mode=False, max_hands=2, detection_confidant=0, track_confidant=0.5):
@@ -44,14 +37,11 @@ class HandDetector():
             my_hand = self.results.multi_hand_landmarks[hand_num]
 
             for id, lm in enumerate(my_hand.landmark):
-                # print(id, lm)
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
-                # print(id, cx, cy)
                 lm_list.append([id, cx, cy])
-                # if id == 0:  # id of the landmark (21 in total)
-                # if draw:
-                #     cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
+                if draw:
+                    cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
         return lm_list
 
 
@@ -60,7 +50,6 @@ def main():
     detector = HandDetector()
 
     prev_time = 0
-    cur_time = 0
 
     while True:
         success, img = cap.read()

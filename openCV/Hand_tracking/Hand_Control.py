@@ -3,6 +3,7 @@
 import cv2
 import time
 import numpy
+import hand_tracking_class as htm
 
 
 def main():
@@ -14,8 +15,28 @@ def main():
     # measure fps
     prev_time = 0
 
+    # hand object
+    detector = htm.HandDetector()
+
     while True:
         success, img = cap.read()
+
+        # detect hands and put dots and lines
+        img = detector.find_hands(img)
+        lm_list = detector.find_position(img, draw=False)
+
+        if not len(lm_list) == 0:
+
+            # find thumb and index fingertips (see hand_landmarks.png)
+            print(lm_list[4], lm_list[8])
+
+            # find center of the fingers by landmarks
+            x1, y1 = lm_list[4][1], lm_list[4][2]
+            x2, y2 = lm_list[8][1], lm_list[8][2]
+
+            # draw a circle in the center
+            cv2.circle(img, (x1, y1), 15, (255, 0, 255), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 15, (255, 0, 255), cv2.FILLED)
 
         # number of frames
         cur_time = time.time()
