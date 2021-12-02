@@ -1,18 +1,13 @@
 #!/usr/bin/python3
 
+import colorama
 import rospy
 from pub_sub_dog_class.msg import Dog
-from pub_sub_dog_class.srv import SetDogName, SetDogNameResponse
-
-
-def handle_set_dog_name(req):
-    return SetDogNameResponse(req.new_name)
 
 
 def main():
-    rospy.init_node("SetDogName")
-    pub = rospy.Publisher("Carro", Dog, queue_size=10)
-    rate = rospy.Rate(1)  # 10hz
+    rospy.init_node('publisher', anonymous=True)
+    pub = rospy.Publisher('chatter', Dog, queue_size=10)
 
     while not rospy.is_shutdown():
         dog = Dog()

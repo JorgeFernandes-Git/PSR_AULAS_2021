@@ -2,7 +2,7 @@
 import argparse
 import rospy
 from std_msgs.msg import String
-from pub_sub_dog_class.msg import Dog
+from bringup_exemple.msg import Dog
 
 
 def main():
