@@ -48,12 +48,14 @@ class HandDetector():
                 y_list.append(cy)
                 self.lm_list.append([id, cx, cy])
                 if draw:
-                    cv2.circle(img, (cx, cy), 15, (255, 0, 255), cv2.FILLED)
+                    cv2.circle(img, (cx, cy),
+                               5, (255, 0, 255), cv2.FILLED)
 
             x_min, x_max = min(x_list), max(x_list)
             y_min, y_max = min(y_list), max(y_list)
             bbox = x_min, y_min, x_max, y_max
 
+            # hand rectangle
             if draw:
                 cv2.rectangle(img, (x_min - 20, y_min - 20), (x_max + 20, y_max + 20), (0, 255, 0, 2))
 
