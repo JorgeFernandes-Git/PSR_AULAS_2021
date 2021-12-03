@@ -5,6 +5,7 @@ from std_msgs.msg import String
 from bringup_exemple.msg import Dog
 
 
+
 def main():
     parser = argparse.ArgumentParser(description='Select the message to send, the topic and the rate')
     parser.add_argument("-nd", "--node", type=str, default="Anywhere", help="Name the node to publish")
