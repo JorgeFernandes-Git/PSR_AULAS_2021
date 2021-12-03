@@ -1,0 +1,4 @@
+<launch>
+    <param name="highlight_text_color" value="YELLOW" />
+    <node name="publisherA" pkg="bringup_exemple" type="publisher.py" output="screen"/>
+</launch>
